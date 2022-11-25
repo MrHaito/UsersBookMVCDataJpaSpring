@@ -11,7 +11,6 @@ import ru.klopskiy.usersbook.services.BookService;
 import ru.klopskiy.usersbook.services.PersonService;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/books")
@@ -27,8 +26,11 @@ public class BookController {
     }
 
     @GetMapping()
-    public String getAll(Model model) {
-        model.addAttribute("books", bookService.getAll());
+    public String getAll(@RequestParam(value = "page", required = false) Integer page,
+                         @RequestParam(value = "books_per_page", required = false) Integer booksPerPage,
+                         @RequestParam(value = "sort_by_year", required = false) boolean sortByYear,
+                         Model model) {
+        model.addAttribute("books", bookService.getAll(page, booksPerPage, sortByYear));
         return "books/index";
     }
 
@@ -98,5 +100,17 @@ public class BookController {
     public String delete(@PathVariable("id") int id) {
         bookService.delete(id);
         return "redirect:/books";
+    }
+
+    @GetMapping("/search")
+    public String search() {
+        return "books/search";
+    }
+
+    @PostMapping("/search")
+    public String findByName(@RequestParam("title") String title,
+                             Model model) {
+        model.addAttribute("books", bookService.findByName(title));
+        return "books/search";
     }
 }

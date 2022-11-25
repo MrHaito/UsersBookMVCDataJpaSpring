@@ -20,7 +20,6 @@
     <input type="text" th:field="*{year}" id="year">
     <div style="color:red" th:if="${#fields.hasErrors('year')}" th:errors="*{year}">Name error</div>
     <br/>
-    <input type="hidden" th:object="${book.owner}" th:field="*{id}" id="owner">
     <input type="submit" value="Редактировать!">
 </form>
 

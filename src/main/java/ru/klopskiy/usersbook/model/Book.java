@@ -3,6 +3,11 @@ package ru.klopskiy.usersbook.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.sql.Timestamp;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 
 @Entity
 @Table(name = "books")
@@ -25,6 +30,13 @@ public class Book {
 
     @Column(name = "year")
     int year;
+
+    @Column(name = "taken")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date taken;
+
+    @Transient
+    private boolean isOverdue;
 
     @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "person_id")
@@ -77,6 +89,22 @@ public class Book {
 
     public void setOwner(Person owner) {
         this.owner = owner;
+    }
+
+    public Date getTaken() {
+        return taken;
+    }
+
+    public void setTaken(Date taken) {
+        this.taken = taken;
+    }
+
+    public boolean isOverdue() {
+        return isOverdue;
+    }
+
+    public void setOverdue(boolean overdue) {
+        isOverdue = overdue;
     }
 
     @Override
