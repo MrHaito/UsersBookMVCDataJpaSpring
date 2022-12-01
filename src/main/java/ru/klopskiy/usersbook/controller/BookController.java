@@ -35,7 +35,7 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public String get(@PathVariable("id") int id,
+    public String get(@PathVariable int id,
                       @ModelAttribute("owner") Person person,
                       Model model) {
         Person bookOwner = bookService.getOwner(id);
@@ -50,15 +50,15 @@ public class BookController {
     }
 
     @PostMapping("/{id}/clear")
-    public String clearOwner(@PathVariable("id") int id) {
+    public String clearOwner(@PathVariable int id) {
         bookService.clear(id);
         return "redirect:/books/{id}";
     }
 
     @PatchMapping("/{id}/add_owner")
     public String addOwner(@ModelAttribute("owner") Person person,
-                           @PathVariable("id") int bookId) {
-        bookService.addOwner(bookId, person);
+                           @PathVariable int id) {
+        bookService.addOwner(id, person);
         return "redirect:/books/{id}";
     }
 
@@ -80,7 +80,7 @@ public class BookController {
 
     @GetMapping("/{id}/edit")
     public String edit(Model model,
-                       @PathVariable("id") int id) {
+                       @PathVariable int id) {
         model.addAttribute("book", bookService.get(id));
         return "/books/edit";
     }
@@ -88,7 +88,7 @@ public class BookController {
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("book") @Valid Book book,
                          BindingResult bindingResult,
-                         @PathVariable("id") int id) {
+                         @PathVariable int id) {
         if (bindingResult.hasErrors()) {
             return "books/edit";
         }
@@ -97,7 +97,7 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") int id) {
+    public String delete(@PathVariable int id) {
         bookService.delete(id);
         return "redirect:/books";
     }

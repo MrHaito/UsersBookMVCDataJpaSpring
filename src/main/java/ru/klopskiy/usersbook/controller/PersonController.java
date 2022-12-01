@@ -34,7 +34,7 @@ public class PersonController {
     }
 
     @GetMapping("/{id}")
-    public String get(@PathVariable("id") int id,
+    public String get(@PathVariable int id,
                       Model model) {
         model.addAttribute("person", personService.get(id));
         model.addAttribute("books", bookService.getBooksByOwner(personService.get(id)));
@@ -59,7 +59,7 @@ public class PersonController {
 
     @GetMapping("/{id}/edit")
     public String edit(Model model,
-                       @PathVariable("id") int id) {
+                       @PathVariable int id) {
         model.addAttribute("person", personService.get(id));
         return "/persons/edit";
     }
@@ -67,7 +67,7 @@ public class PersonController {
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("person") @Valid Person person,
                          BindingResult bindingResult,
-                         @PathVariable("id") int id) {
+                         @PathVariable int id) {
         if (bindingResult.hasErrors()) {
             return "persons/edit";
         }
@@ -76,7 +76,7 @@ public class PersonController {
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") int id) {
+    public String delete(@PathVariable int id) {
         personService.delete(id);
         return "redirect:/persons";
     }
